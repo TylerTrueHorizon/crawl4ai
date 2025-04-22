@@ -1,4 +1,6 @@
-# Base configuration (not a service, just a reusable config block)
+version: "3.9"
+
+# ─── Base configuration (re‑used via YAML anchor) ────────────────────────────────
 x-base-config: &base-config
   ports:
     - "11235:11235"
@@ -25,9 +27,10 @@ x-base-config: &base-config
     retries: 3
     start_period: 40s
 
+# ─── Services ────────────────────────────────────────────────────────────────────
 services:
-  # Local build services for different platforms
-  crawl4ai-amd64:
+  crawl4ai:
+    <<: *base-config            # inherit the common settings
     build:
       context: .
       dockerfile: Dockerfile
@@ -36,30 +39,4 @@ services:
         INSTALL_TYPE: ${INSTALL_TYPE:-basic}
         ENABLE_GPU: false
       platforms:
-        - linux/amd64
-    profiles: ["local-amd64"]
-    <<: *base-config  # extends yerine doğrudan yapılandırmayı dahil ettik
-
-  crawl4ai-arm64:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        PYTHON_VERSION: "3.10"
-        INSTALL_TYPE: ${INSTALL_TYPE:-basic}
-        ENABLE_GPU: false
-      platforms:
-        - linux/arm64
-    profiles: ["local-arm64"]
-    <<: *base-config
-
-  # Hub services for different platforms and versions
-  crawl4ai-hub-amd64:
-    image: unclecode/crawl4ai:${VERSION:-basic}-amd64
-    profiles: ["hub-amd64"]
-    <<: *base-config
-
-  crawl4ai-hub-arm64:
-    image: unclecode/crawl4ai:${VERSION:-basic}-arm64
-    profiles: ["hub-arm64"]
-    <<: *base-config
+        - linux/amd64           # ensure AMD64 build
