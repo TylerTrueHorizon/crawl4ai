@@ -6,7 +6,7 @@ x-base-config: &base-config
     - "11235:11235"
     - "7000:7000"
     - "9222:9222"
-    - "8080:8080"
+    - "7070:7070"
   environment:
     - CRAWL4AI_API_TOKEN=${CRAWL4AI_API_TOKEN:-}
     - OPENAI_API_KEY=${OPENAI_API_KEY:-}
