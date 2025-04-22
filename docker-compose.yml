@@ -30,6 +30,7 @@ x-base-config: &base-config
 # ─── Services ────────────────────────────────────────────────────────────────────
 services:
   crawl4ai:
+    profiles: ["local-amd64"]   # enable `local-amd64` profile support
     <<: *base-config            # inherit the common settings
     build:
       context: .
