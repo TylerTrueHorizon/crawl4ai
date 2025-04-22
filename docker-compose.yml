@@ -27,11 +27,10 @@ x-base-config: &base-config
     retries: 3
     start_period: 40s
 
-# ─── Services ────────────────────────────────────────────────────────────────────
+# ─── Single service, no profiles ─────────────────────────────────────────────────
 services:
   crawl4ai:
-    profiles: ["local-amd64"]   # enable `local-amd64` profile support
-    <<: *base-config            # inherit the common settings
+    <<: *base-config
     build:
       context: .
       dockerfile: Dockerfile
@@ -40,4 +39,4 @@ services:
         INSTALL_TYPE: ${INSTALL_TYPE:-basic}
         ENABLE_GPU: false
       platforms:
-        - linux/amd64           # ensure AMD64 build
+        - linux/amd64
